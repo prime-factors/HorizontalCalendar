@@ -22,6 +22,7 @@ public class HorizontalCalendar: UIView {
     
     static var selectedColor = UIColor(red: 0/255, green: 133/255, blue: 154/255, alpha: 1)
     static var todayColor = UIColor(red: 255/255, green: 62/255, blue: 85/255, alpha: 1)
+    @available(iOS 13.0, *)
     static var textDark = UIColor { traitCollection in
         switch traitCollection.userInterfaceStyle {
         case .dark:
@@ -30,6 +31,7 @@ public class HorizontalCalendar: UIView {
             return UIColor(red: 74/255, green: 74/255, blue: 74/255, alpha: 1)
         }
     }
+    @available(iOS 13.0, *)
     static var textLight = UIColor { traitCollection in
         switch traitCollection.userInterfaceStyle {
         case .dark:
@@ -38,6 +40,7 @@ public class HorizontalCalendar: UIView {
             return UIColor(red: 155/255, green: 155/255, blue: 155/255, alpha: 1)
         }
     }
+    @available(iOS 13.0, *)
     static var dateColor = UIColor { traitCollection in
         switch traitCollection.userInterfaceStyle {
         case .dark:
@@ -53,7 +56,11 @@ public class HorizontalCalendar: UIView {
         let label = UILabel()
         label.text = "Thursday, May 30"
         label.font = .boldSystemFont(ofSize: fontLarge)
-        label.textColor = HorizontalCalendar.dateColor
+        if #available(iOS 13.0, *) {
+            label.textColor = HorizontalCalendar.dateColor
+        } else {
+            label.textColor = UIColor(red: 34/255, green: 34/255, blue: 34/255, alpha: 1)
+        }
         
         return label
     }()
@@ -68,7 +75,11 @@ public class HorizontalCalendar: UIView {
     private lazy var todayButton: UIButton = { [unowned self] in
         let button = UIButton(type: .system)
         button.setTitle("Go to Today", for: .normal)
-        button.setTitleColor(HorizontalCalendar.textDark, for: .normal)
+        if #available(iOS 13.0, *) {
+            button.setTitleColor(HorizontalCalendar.textDark, for: .normal)
+        } else {
+            button.setTitleColor(UIColor(red: 74/255, green: 74/255, blue: 74/255, alpha: 1), for: .normal)
+        }
         button.titleLabel?.font = .systemFont(ofSize: fontMedium)
         button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 7, bottom: 0, right: 7)
         button.layer.cornerRadius = 5
@@ -442,7 +453,11 @@ class WeekDayLabel: UIView {
         self.isDark = isDark
         super.init(frame: .zero)
         
-        label.textColor = isDark ? HorizontalCalendar.textDark : HorizontalCalendar.textLight
+        if #available(iOS 13.0, *) {
+            label.textColor = isDark ? HorizontalCalendar.textDark : HorizontalCalendar.textLight
+        } else {
+            label.textColor = isDark ? UIColor(red: 74/255, green: 74/255, blue: 74/255, alpha: 1) : UIColor(red: 155/255, green: 155/255, blue: 155/255, alpha: 1)
+        }
         label.text = text
         label.font = .boldSystemFont(ofSize: fontSmall)
         
@@ -466,9 +481,17 @@ class WeekDayLabel: UIView {
         } else if isTextRed {
             label.textColor = HorizontalCalendar.todayColor
         } else if isDark {
-            label.textColor = HorizontalCalendar.textDark
+            if #available(iOS 13.0, *) {
+                label.textColor = HorizontalCalendar.textDark
+            } else {
+                label.textColor = UIColor(red: 74/255, green: 74/255, blue: 74/255, alpha: 1)
+            }
         } else {
-            label.textColor = HorizontalCalendar.textLight
+            if #available(iOS 13.0, *) {
+                label.textColor = UIColor(red: 155/255, green: 155/255, blue: 155/255, alpha: 1)
+            } else {
+                label.textColor = UIColor(red: 74/255, green: 74/255, blue: 74/255, alpha: 1)
+            }
         }
     }
     
