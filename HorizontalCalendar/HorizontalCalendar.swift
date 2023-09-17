@@ -227,18 +227,18 @@ extension HorizontalCalendar {
         addSubview(weekDays)
         NSLayoutConstraint.activate([
             weekDays.heightAnchor.constraint(equalToConstant: 30),
-            weekDays.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
-            weekDays.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
+            weekDays.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
+            weekDays.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
             weekDays.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 16)
         ])
         
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(collectionView)
-        collectionViewToBottom = collectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
+        collectionViewToBottom = collectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0)
         NSLayoutConstraint.activate([
             collectionView.heightAnchor.constraint(equalToConstant: dateCellHeight),
-            collectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
-            collectionView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
+            collectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
+            collectionView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
             collectionView.topAnchor.constraint(equalTo: weekDays.bottomAnchor)
         ])
     }
@@ -290,7 +290,7 @@ extension HorizontalCalendar: UICollectionViewDelegate, UICollectionViewDataSour
     }
   
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = frame.size.width - 16
+        let width = frame.size.width - 0
         return CGSize(width: width, height: dateCellHeight)
     }
 }
@@ -430,6 +430,7 @@ class WeekDayLabel: UIView {
         
         label.textColor = isDark ? HorizontalCalendar.textDark : HorizontalCalendar.textLight
         label.text = text
+        label.font = .boldSystemFont(ofSize: fontSmall)
         
         setupViews()
     }
