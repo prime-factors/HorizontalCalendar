@@ -22,9 +22,30 @@ public class HorizontalCalendar: UIView {
     
     static var selectedColor = UIColor(red: 0/255, green: 133/255, blue: 154/255, alpha: 1)
     static var todayColor = UIColor(red: 255/255, green: 62/255, blue: 85/255, alpha: 1)
-    static var textDark = UIColor(red: 74/255, green: 74/255, blue: 74/255, alpha: 1)
-    static var textLight = UIColor(red: 155/255, green: 155/255, blue: 155/255, alpha: 1)
-    static var dateColor = UIColor(red: 34/255, green: 34/255, blue: 34/255, alpha: 1)
+    static var textDark = UIColor { traitCollection in
+        switch traitCollection.userInterfaceStyle {
+        case .dark:
+            return UIColor.white
+        default:
+            return UIColor(red: 74/255, green: 74/255, blue: 74/255, alpha: 1)
+        }
+    }
+    static var textLight = UIColor { traitCollection in
+        switch traitCollection.userInterfaceStyle {
+        case .dark:
+            return UIColor(red: 211/255, green: 211/255, blue: 211/255, alpha: 1.00)
+        default:
+            return UIColor(red: 155/255, green: 155/255, blue: 155/255, alpha: 1)
+        }
+    }
+    static var dateColor = UIColor { traitCollection in
+        switch traitCollection.userInterfaceStyle {
+        case .dark:
+            return UIColor.white
+        default:
+            return UIColor(red: 34/255, green: 34/255, blue: 34/255, alpha: 1)
+        }
+    }
 
     let border = UIColor(red: 216/255, green: 216/255, blue: 216/255, alpha: 1)
 
