@@ -125,6 +125,7 @@ public class HorizontalCalendar: UIView {
     private let today = Date()
     private var list = [Date]()
 
+    static var hideCalendar: Bool = false
     public var selectedWeekDay: Int
     public var selectedDate: Date {
         didSet {
@@ -155,6 +156,15 @@ public class HorizontalCalendar: UIView {
         DispatchQueue.main.async { [weak self] in
             self?.collectionView.scrollToItem(at: IndexPath(row: self?.createCellThreshold ?? 5, section: 0), at: .centeredHorizontally, animated: false)
         }
+        
+        let shouldShow = arrow.transform == CGAffineTransform.identity
+        
+        self.collectionView.isHidden = false
+        self.weekDays.isHidden = false
+        self.arrow.transform = CGAffineTransform(rotationAngle: shouldShow ? .pi : 0)
+        self.arrow.isHidden = !HorizontalCalendar.hideCalendar
+        self.dateViewToBottom.isActive = false
+        self.collectionViewToBottom.isActive = true
     }
     
     required init?(coder: NSCoder) {
@@ -162,14 +172,16 @@ public class HorizontalCalendar: UIView {
     }
     
     func toggleCalendar() {
-        let shouldShow = arrow.transform == CGAffineTransform.identity
-        UIView.animate(withDuration: 0.3, animations: { [weak self] in
-            self?.collectionView.isHidden = shouldShow
-            self?.weekDays.isHidden = shouldShow
-            self?.arrow.transform = CGAffineTransform(rotationAngle: shouldShow ? .pi : 0)
-            self?.dateViewToBottom.isActive = shouldShow
-            self?.collectionViewToBottom.isActive = !shouldShow
-        })
+        if(HorizontalCalendar.hideCalendar) {
+            let shouldShow = arrow.transform == CGAffineTransform.identity
+            UIView.animate(withDuration: 0.3, animations: { [weak self] in
+                self?.collectionView.isHidden = shouldShow
+                self?.weekDays.isHidden = shouldShow
+                self?.arrow.transform = CGAffineTransform(rotationAngle: shouldShow ? .pi : 0)
+                self?.dateViewToBottom.isActive = shouldShow
+                self?.collectionViewToBottom.isActive = !shouldShow
+            })
+        }
     }
 }
 
@@ -186,14 +198,16 @@ extension HorizontalCalendar {
             dateViewToBottom
         ])
         
-        arrow.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(arrow)
-        NSLayoutConstraint.activate([
-            arrow.widthAnchor.constraint(equalTo: dateLabel.heightAnchor),
-            arrow.heightAnchor.constraint(equalTo: dateLabel.heightAnchor),
-            arrow.leadingAnchor.constraint(equalTo: dateLabel.trailingAnchor, constant: 8),
-            arrow.centerYAnchor.constraint(equalTo: dateLabel.centerYAnchor)
-        ])
+        if(HorizontalCalendar.hideCalendar) {
+            arrow.translatesAutoresizingMaskIntoConstraints = false
+            addSubview(arrow)
+            NSLayoutConstraint.activate([
+                arrow.widthAnchor.constraint(equalTo: dateLabel.heightAnchor),
+                arrow.heightAnchor.constraint(equalTo: dateLabel.heightAnchor),
+                arrow.leadingAnchor.constraint(equalTo: dateLabel.trailingAnchor, constant: 8),
+                arrow.centerYAnchor.constraint(equalTo: dateLabel.centerYAnchor)
+            ])
+        }
         
         [dateLabel, arrow].forEach {
             $0.addTapGestureRecognizer { [weak self] in
